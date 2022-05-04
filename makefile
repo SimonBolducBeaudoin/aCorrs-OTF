@@ -5,7 +5,7 @@ RM = rm
 PY = $(OS:Windows_NT=/c/Anaconda2/)python
 
 # flags
-CFLAGS = -Ofast -march=native -std=c++11 -MMD -MP -Wall $(OS:Windows_NT=-DMS_WIN64 -D_hypot=hypot)
+CFLAGS = -O3 -march=native -std=c++14 -MMD -MP -Wall $(OS:Windows_NT=-DMS_WIN64 -D_hypot=hypot)
 OMPFLAGS = -fopenmp -fopenmp-simd
 SHRFLAGS = -fPIC -shared
 FFTWFLAGS = -lfftw3 -lm
@@ -17,7 +17,8 @@ ifneq ($(OS),Windows_NT)
 endif
 
 # libraries
-LDLIBS = -lmpfr $(OS:Windows_NT=-L /c/Anaconda2/ -l python27) $(PYINCL) 
+LINKS  = -lmpfr $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
+INCLUDES = $(PYINCL) 
 
 # directories
 OBJ_DIR = obj
@@ -34,15 +35,17 @@ DEPS := $(OBJS:.o=.d)
 TARGET := $(BIN_DIR)/$(BIN).$(EXT)
 PYTARGET := $(BIN_DIR)/$(PYBIN)
 
+COMPILE = $(CXX) $(SHRFLAGS) $(CFLAGS) $(OMPFLAGS) $(INCLUDES) -c $< -o $@
+LINKING = $(CXX) -o $(TARGET) $(OBJS) $(SHRFLAGS) $(CFLAGS) $(OMPFLAGS) $(FFTWFLAGS) $(LINKS)
 
 all: $(TARGET) $(PYTARGET)
 
 $(TARGET): $(OBJS)
-	$(CXX) -o $(TARGET) $(OBJS) $(SHRFLAGS) $(CFLAGS) $(OMPFLAGS) $(FFTWFLAGS) $(LDLIBS)
+	$(LINKING)
 
 # compile source
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp 
-	$(CXX) $(SHRFLAGS) $(CFLAGS) $(OMPFLAGS) $(LDLIBS) -c $< -o $@
+	$(COMPILE)
 
 # bring python files along
 $(BIN_DIR)/%.py: $(SRC_DIR)/%.py
