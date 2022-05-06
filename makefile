@@ -2,7 +2,12 @@
 CXX = $(OS:Windows_NT=x86_64-w64-mingw32-)g++
 CP = cp
 RM = rm
-PY = $(OS:Windows_NT=/c/Anaconda2/)python
+
+ifeq ($(shell hostname),Simon-T14) 
+	PY = $(OS:Windows_NT=/c/Anaconda3/envs/python2/)python
+else
+    PY = $(OS:Windows_NT=/c/Anaconda2/)python
+endif
 
 # flags
 CFLAGS = -O3 -march=native -std=c++14 -MMD -MP -Wall $(OS:Windows_NT=-DMS_WIN64 -D_hypot=hypot)
@@ -12,12 +17,13 @@ FFTWFLAGS = -lfftw3 -lm
 
 # includes
 PYINCL := $(shell $(PY) -m pybind11 --includes)
-ifneq ($(OS),Windows_NT)
-    PYINCL += -I /usr/include/python2.7/
-endif
 
 # libraries
-LINKS  = -lmpfr $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
+ifeq ($(shell hostname),Simon-T14) 
+	LINKS  = -lmpfr $(OS:Windows_NT=-L /c/Anaconda3/envs/python2/ -lpython27)
+else
+    LINKS  = -lmpfr $(OS:Windows_NT=-L /c/Anaconda2/ -lpython27)
+endif
 INCLUDES = $(PYINCL) 
 
 # directories
