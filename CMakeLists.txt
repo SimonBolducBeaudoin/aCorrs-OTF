@@ -17,7 +17,7 @@ list(TRANSFORM EXTERNAL_INCLUDES PREPEND "${PROJECT_SOURCE_DIR}/../" REGEX "^(.*
 list(TRANSFORM STATIC_LINKS PREPEND "${PROJECT_SOURCE_DIR}/../" REGEX "^(.*)$" )
 list(APPEND LINKS ${STATIC_LINKS})
 
-# AUTOGIT STUFF #########
+# AUTOGIT STUFF #########   
 include(../AutoGitVersion/AutoGitVersion.cmake) # Defined cmake functions : AutoGitVersion and others
 AutoGitVersion()                 # Sets up a target git_version.cpp that constains  kGitHash and GitTag as const
 set(DEPENDS_ON_GIT_VERSION git_version)

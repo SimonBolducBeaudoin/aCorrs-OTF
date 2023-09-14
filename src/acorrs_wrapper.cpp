@@ -9,6 +9,7 @@
 #include <vector>
 #include "git_version.h"
 
+
 namespace py = pybind11;
 
 //TODO: Minimize redundant code by somehow integrating both declaration classes?
