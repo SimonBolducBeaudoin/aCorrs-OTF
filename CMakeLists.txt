@@ -2,7 +2,7 @@
 # windows using cygwin and crosscompiling using mingw
 # also don't forget to edit config.cmake     
 
-set(PROJECT_NAME aCorrs)                    
+set(PROJECT_NAME aCorrs-OTF)                    
 set(LIB_NAME acorrs_wrapper)                        
 set(EXTERNAL_INCLUDES )
 set(STATIC_LINKS ) 
@@ -18,9 +18,8 @@ list(TRANSFORM STATIC_LINKS PREPEND "${PROJECT_SOURCE_DIR}/../" REGEX "^(.*)$" )
 list(APPEND LINKS ${STATIC_LINKS})
 
 # AUTOGIT STUFF #########   
-include(../AutoGitVersion/AutoGitVersion.cmake) # Defined cmake functions : AutoGitVersion and others
-AutoGitVersion()                 # Sets up a target git_version.cpp that constains  kGitHash and GitTag as const
-set(DEPENDS_ON_GIT_VERSION git_version)
+include(../AutoGitVersion/AutoGitVersion.cmake )   # Defined cmake functions : AutoGitVersion and others
+AutoGitVersion(GIT_VERSION_TARGET ${PROJECT_NAME}) # Sets up a target git_version.cpp that constains  kGitHash and GitTag as const
 #########################
 
 if(NOT CMAKE_BUILD_TYPE)
@@ -56,7 +55,7 @@ include_directories(${EXTERNAL_INCLUDES})
 
 set_target_properties(${LIB_NAME}_py PROPERTIES PREFIX "${SHARED_LIB_PREFIX}")
 set_target_properties(${LIB_NAME}_py PROPERTIES SUFFIX ${SHARED_LIB_SUFFIX})
-target_link_libraries(${LIB_NAME}_py ${DEPENDS_ON_GIT_VERSION} ${LINKS})
+target_link_libraries(${LIB_NAME}_py ${GIT_VERSION_TARGET} ${LINKS})
 
 add_custom_target(CopyAcorrsOTF COMMAND cp ${PROJECT_SOURCE_DIR}/src/acorrs_otf.py ${PROJECT_SOURCE_DIR}/obj/acorrs_otf.py BYPRODUCTS ${PROJECT_SOURCE_DIR}/obj/acorrs_otf.py )
 
