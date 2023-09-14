@@ -9,7 +9,6 @@ from numpy import ndarray, ceil, log2, iinfo, zeros, allclose, arange, array
 from numpy import floor, log10, savez_compressed, load
 from decimal import Decimal
 
-
 # Uncomment if you're not installing it in SBB library
 #import acorrs_wrapper
 #from acorrs_wrapper import set_mpreal_precision

@@ -7,6 +7,8 @@
 #include <pybind11/stl.h>
 #include <string.h>
 #include <vector>
+#include "git_version.h"
+
 
 namespace py = pybind11;
 
@@ -329,8 +331,10 @@ void declare_phiclass(py::module &m, std::string typestr) {
 #define declare_phiclass_for(U) declare_phiclass<U##_t>(m, std::string(#U));
 
 PYBIND11_MODULE(acorrs_wrapper, m) {
-    m.doc() = "pybind11 wrapper for acorrs.h"; // optional module docstring
-    m.attr("the_answer") = 42;
+    m.doc() = "pybind11 wrapper for acorrs.h.\n"\
+    "Git Info : \n "\
+    + std::string(kGitInfo)\
+    +"\n"; 
     m.def("set_mpreal_precision", &set_mpreal_precision);
 
     declare_class_for(uint8)
