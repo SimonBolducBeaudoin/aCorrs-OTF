@@ -27,7 +27,7 @@
 
 
 #ifdef _WIN32_WINNT
-    #include "mpreal.h"
+    #include "../mpreal/mpreal.h"
 #else
     #include <mpreal.h>
 #endif
