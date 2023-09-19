@@ -1,3 +1,6 @@
 [submodule "mpreal"]
 	path = mpreal
 	url = https://github.com/advanpix/mpreal.git
+[submodule "CMakeConfigs"]
+	path = CMakeConfigs
+	url = https://github.com/SimonBolducBeaudoin/CMakeConfigs.git
