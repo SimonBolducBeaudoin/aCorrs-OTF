@@ -61,4 +61,15 @@ Output:
 
 ```
 
-!INCLUDE "cmake_instructions.md"
+# Building and compiling
+    - Edit config.cmake for your machine (If you are compiling in a different envionnment than your python installation) so that pybind11 can be detected and used.
+    - cmake -S . -B ./build  
+        - (Windows) Cross compile on Cygwin using the included toolchain
+        - cmake -S . -B ./build -DCMAKE_TOOLCHAIN_FILE=../mingw_toolchain.cmake
+    - cmake --build build/
+    - cmake --install build/
+        
+# Cleaning up
+    - cmake --build build/ --target clean (removes targets)
+    - rm -R -f build/ (removes build directory)
+    
