@@ -61,6 +61,4 @@ Output:
 
 ```
 
-## Compiling
-
-Simply execute `make all`.
+!INCLUDE "cmake_instructions.md"

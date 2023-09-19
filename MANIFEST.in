@@ -1,0 +1,3 @@
+include acorrs_wrapper.so
+include acorrs_wrapper.pyd
+
