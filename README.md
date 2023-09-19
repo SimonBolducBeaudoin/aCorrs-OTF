@@ -67,7 +67,7 @@ Edit config.cmake for your machine (If you are compiling in a different envionnm
 cmake -S . -B ./build  # Building in Linux
 ```
 ```bash
-cmake -S . -B ./build -DCMAKE_TOOLCHAIN_FILE=../mingw_toolchain.cmake # Building in Windows (Cross compiling on Cygwin with mingw)
+cmake -S . -B ./build -DCMAKE_TOOLCHAIN_FILE=../CMakeConfigs/mingw_toolchain.cmake # Building in Windows (Cross compiling on Cygwin with mingw)
 ```
 ```bash
 cmake --build build/ # Compiles the project
