@@ -71,19 +71,15 @@ cmake -S . -B ./build
 ```bash
 cmake -S . -B ./build -DCMAKE_TOOLCHAIN_FILE=../mingw_toolchain.cmake
 ```
-## Compiling
 ```bash
-cmake --build build/
+cmake --build build/ # Compiles the project
 ```
-## Installing
 ```bash
-cmake --install build/
+cmake --install build/ # Copies files to their intended directory
 ```   
-## Cleaning up
 ```bash
 cmake --build build/ --target clean # removes targets 
 ```   
 ```bash
 rm -R -f build/ # removes build directory
 ```   
-    
