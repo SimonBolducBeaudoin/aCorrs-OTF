@@ -65,11 +65,10 @@ Output:
 Edit config.cmake for your machine (If you are compiling in a different envionnment than your python installation) so th  at pybind11 can be detected and used.
 ## Building the cmake project
 ```bash
-cmake -S . -B ./build  
+cmake -S . -B ./build  # Building in Linux
 ```
-(Windows) Cross compile on Cygwin using the included toolchain
 ```bash
-cmake -S . -B ./build -DCMAKE_TOOLCHAIN_FILE=../mingw_toolchain.cmake
+cmake -S . -B ./build -DCMAKE_TOOLCHAIN_FILE=../mingw_toolchain.cmake # Building in Windows (Cross compiling on Cygwin with mingw)
 ```
 ```bash
 cmake --build build/ # Compiles the project
