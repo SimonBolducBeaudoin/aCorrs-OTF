@@ -1,7 +1,3 @@
-# Should be compatible with unix and 
-# windows using cygwin and crosscompiling using mingw
-# also don't forget to edit config.cmake     
-
 set(PROJECT_NAME aCorrs-OTF)                    
 set(LIB_NAME acorrs_wrapper)                        
 set(EXTERNAL_INCLUDES )
@@ -40,7 +36,7 @@ add_compile_options(${COMPILE_OPTIONS_ADD})
 
 add_library(${LIB_NAME}_py ${SRC_FILES})        #shared library (i.e. the python library)
 set_target_properties(${LIB_NAME}_py PROPERTIES OUTPUT_NAME ${LIB_NAME})        #shared library (i.e. the python library)
-include(config.cmake) # sets IS_MINGW,PY_INCL,SHARED_LIB_PREFIX,SHARED_LIB_SUFFIX and updates LINKS
+include(CMakeConfigs/pybind11.cmake) # sets IS_MINGW,PY_INCL,SHARED_LIB_PREFIX,SHARED_LIB_SUFFIX and updates LINKS
 
 #compile includes
 include_directories(${PY_INCL})           # pybind11 includes
@@ -52,7 +48,6 @@ set_target_properties(${LIB_NAME}_py PROPERTIES PREFIX "${SHARED_LIB_PREFIX}")
 set_target_properties(${LIB_NAME}_py PROPERTIES SUFFIX ${SHARED_LIB_SUFFIX})
 target_link_libraries(${LIB_NAME}_py ${LINKS})
 
-add_custom_target(CopyAcorrsOTF COMMAND cp ${PROJECT_SOURCE_DIR}/src/acorrs_otf.py ${PROJECT_SOURCE_DIR}/obj/acorrs_otf.py BYPRODUCTS ${PROJECT_SOURCE_DIR}/obj/acorrs_otf.py )
-
-add_dependencies(${LIB_NAME}_py CopyAcorrsOTF)
+message(STATUS "Installing aCorrs-OTF")
+install(DIRECTORY ${PROJECT_SOURCE_DIR}/obj/ DESTINATION ${PROJECT_SOURCE_DIR}/ FILES_MATCHING PATTERN "*.pyd" PATTERN "*.so")
 
