@@ -76,6 +76,9 @@ cmake --build build/ # Compiles the project
 cmake --install build/ # Copies files to their intended directory
 ```   
 ```bash
+cmake --build build/ --target uninstall # uninstall 
+```  
+```bash
 cmake --build build/ --target clean # removes targets 
 ```   
 ```bash

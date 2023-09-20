@@ -1,0 +1,2 @@
+file(REMOVE @INSTALL_DIR@/acorrs_wrapper.pyd)
+file(REMOVE @INSTALL_DIR@/acorrs_wrapper.so)
