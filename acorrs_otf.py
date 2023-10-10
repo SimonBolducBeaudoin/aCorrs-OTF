@@ -9,13 +9,9 @@ from numpy import ndarray, ceil, log2, iinfo, zeros, allclose, arange, array
 from numpy import floor, log10, savez_compressed, load
 from decimal import Decimal
 
-# Uncomment if you're not installing it in SBB library
-#import acorrs_wrapper
-#from acorrs_wrapper import set_mpreal_precision
-
 # For compatibility with my own installation
-import SBB.AutoCorr.acorrs_wrapper as acorrs_wrapper
-from SBB.AutoCorr.acorrs_wrapper import set_mpreal_precision
+import acorrs_wrapper
+from acorrs_wrapper import set_mpreal_precision
 
 # Applies to instances created afterwards
 set_mpreal_precision(48)

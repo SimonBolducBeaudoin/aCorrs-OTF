@@ -331,6 +331,9 @@ void declare_phiclass(py::module &m, std::string typestr) {
 PYBIND11_MODULE(acorrs_wrapper, m) {
     m.doc() = "pybind11 wrapper for acorrs.h.\n";
 
+
+    m.def("set_mpreal_precision", &set_mpreal_precision);
+
     declare_class_for(uint8)
     declare_class_for(int8)
     declare_class_for(uint16)
