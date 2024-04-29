@@ -10,11 +10,6 @@
 
 namespace py = pybind11;
 
-//TODO: Minimize redundant code by somehow integrating both declaration classes?
-
-// Equivalent to "from decimal import Decimal"
-py::object Decimal = py::module::import("decimal").attr("Decimal");
-
 template<typename T>
 void declare_class(py::module &m, std::string typestr) {
     using Class = ACorrUpTo<T>;
@@ -39,7 +34,8 @@ void declare_class(py::module &m, std::string typestr) {
                 {self.k,},          // shape
                 {sizeof(double),},  // C-style contiguous strides for double
                 self.aCorrs,        // the data pointer
-                NULL);              // numpy array references this parent
+                py::capsule ( self.aCorrs, [](void *f){;} )
+				);              // numpy array references this parent
             }
         )
         .def("__call__", [](Class& self, py::array_t<T, py::array::c_style>& array) {
@@ -62,33 +58,34 @@ void declare_class(py::module &m, std::string typestr) {
                 {self.k,},          // shape
                 {sizeof(double),},  // C-style contiguous strides for double
                 tmp,                // the data pointer
-                NULL);              // numpy array references this parent
+                py::capsule ( tmp, [](void *f){;})
+				);              // numpy array references this parent
             }
         )
         .def_property_readonly("rk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.rk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.rk_mpfr[i].toString() );}
             return py::array(py::cast(values));
-            }
+            }	
         )
         .def_property_readonly("bk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.bk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.bk_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
         .def_property_readonly("gk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.gk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.gk_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
         .def_property_readonly("m", [](Class& self){
-            return Decimal(self.m_mpfr.toString());
+            return self.m_mpfr.toString() ;
             }
         )
         .def_property_readonly("n", [](Class& self){
-            return Decimal(self.n_mpfr.toString());
+            return self.n_mpfr.toString() ;
             } 
         )
         .def_property_readonly("k", [](Class& self) {return self.k;})
@@ -123,7 +120,8 @@ void declare_fftclass(py::module &m, std::string typestr) {
                 {self.k,},          // shape
                 {sizeof(double),},  // C-style contiguous strides for double
                 self.aCorrs,        // the data pointer
-                NULL);              // numpy array references this parent
+                py::capsule ( self.aCorrs, [](void *f){;})
+				);              // numpy array references this parent
             }
         )
         .def("__call__", [](Class& self, py::array_t<T, py::array::c_style>& array) {
@@ -146,33 +144,34 @@ void declare_fftclass(py::module &m, std::string typestr) {
                 {self.k,},          // shape
                 {sizeof(double),},  // C-style contiguous strides for double
                 tmp,                // the data pointer
-                NULL);              // numpy array references this parent
+                py::capsule ( tmp, [](void *f){;})
+				);              // numpy array references this parent
             }
         )
         .def_property_readonly("rk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.rk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.rk_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
         .def_property_readonly("bk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.bk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.bk_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
         .def_property_readonly("gk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.gk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.gk_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
         .def_property_readonly("m", [](Class& self){
-            return Decimal(self.m_mpfr.toString());
+            return self.m_mpfr.toString() ;
             }
         )
         .def_property_readonly("n", [](Class& self){
-            return Decimal(self.n_mpfr.toString());
+            return self.n_mpfr.toString() ;
             } 
         )
         .def_property_readonly("k", [](Class& self) {return self.k;})
@@ -202,7 +201,8 @@ void declare_phiclass(py::module &m, std::string typestr) {
                 {self.lambda*self.k,},  // shape
                 {sizeof(uint64_t),},      // C-style contiguous strides for double
                 self.nfk,            // the data pointer
-                NULL);                  // numpy array references this parent
+                py::capsule( self.nfk, [](void *f){;} )
+				);                  // numpy array references this parent
             res.resize({self.lambda, self.k});
             return res;
             }
@@ -225,7 +225,8 @@ void declare_phiclass(py::module &m, std::string typestr) {
                 {self.lambda*self.k,},  // shape
                 {sizeof(double),},      // C-style contiguous strides for double
                 self.aCorrs,            // the data pointer
-                NULL);                  // numpy array references this parent
+                py::capsule( self.aCorrs, [](void *f){;} )
+				);                  // numpy array references this parent
             res.resize({self.lambda, self.k});
             return res;
             }
@@ -250,7 +251,8 @@ void declare_phiclass(py::module &m, std::string typestr) {
                 {self.lambda*self.k,},  // shape
                 {sizeof(double),},      // C-style contiguous strides for double
                 tmp,                    // the data pointer
-                NULL);                  // numpy array references this parent
+                py::capsule( tmp, [](void *f){;} )
+				);                  // numpy array references this parent
             res.resize({self.lambda, self.k});
             return res;
             }
@@ -261,56 +263,57 @@ void declare_phiclass(py::module &m, std::string typestr) {
                 {self.k,},  // shape
                 {sizeof(double),},      // C-style contiguous strides for double
                 self.ak,                    // the data pointer
-                NULL);                  // numpy array references this parent
+                py::capsule( self.ak, [](void *f){;} )
+				);                  // numpy array references this parent
             }
         )
         .def_property_readonly("rfk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.lambda*self.k; i++){values.push_back(Decimal(self.rfk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.lambda*self.k; i++){values.push_back( self.rfk_mpfr[i].toString() );}
             auto res = py::array(py::cast(values)); // auto saving my life here
             res.resize({self.lambda, self.k});
             return res;
             }
         )
         .def_property_readonly("nfk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.lambda*self.k; i++){values.push_back(Decimal(self.Nfk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.lambda*self.k; i++){values.push_back( self.Nfk_mpfr[i].toString() );}
             auto res = py::array(py::cast(values)); // auto saving my life here
             res.resize({self.lambda, self.k});
             return res;
             }
         )
         .def_property_readonly("bfk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.lambda*self.k; i++){values.push_back(Decimal(self.bfk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.lambda*self.k; i++){values.push_back( self.bfk_mpfr[i].toString() );}
             auto res = py::array(py::cast(values)); // auto saving my life here
             res.resize({self.lambda, self.k});
             return res;
             }
         )
         .def_property_readonly("gfk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.lambda*self.k; i++){values.push_back(Decimal(self.gfk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.lambda*self.k; i++){values.push_back( self.gfk_mpfr[i].toString() );}
             auto res = py::array(py::cast(values)); // auto saving my life here
             res.resize({self.lambda, self.k});
             return res;
             }
         )
         .def_property_readonly("bk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.bk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.bk_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
         .def_property_readonly("gk", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.k; i++){values.push_back(Decimal(self.gk_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.k; i++){values.push_back( self.gk_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
         .def_property_readonly("mf", [](Class& self){
-            vector<py::object> values;
-            for (int i=0; i<self.lambda; i++){values.push_back(Decimal(self.mf_mpfr[i].toString()));}
+            vector<std::string> values;
+            for (int i=0; i<self.lambda; i++){values.push_back( self.mf_mpfr[i].toString() );}
             return py::array(py::cast(values));
             }
         )
@@ -329,11 +332,9 @@ void declare_phiclass(py::module &m, std::string typestr) {
 #define declare_phiclass_for(U) declare_phiclass<U##_t>(m, std::string(#U));
 
 PYBIND11_MODULE(acorrs_wrapper, m) {
-    m.doc() = "pybind11 wrapper for acorrs.h.\n";
-
-
+	
+	m.doc() = "pybind11 wrapper for acorrs.h.\n";
     m.def("set_mpreal_precision", &set_mpreal_precision);
-
     declare_class_for(uint8)
     declare_class_for(int8)
     declare_class_for(uint16)
