@@ -1,6 +1,10 @@
 [submodule "mpreal"]
 	path = mpreal
 	url = https://github.com/advanpix/mpreal.git
+	branch = master
+	update = rebase
 [submodule "CMakeConfigs"]
 	path = CMakeConfigs
 	url = https://github.com/SimonBolducBeaudoin/CMakeConfigs.git
+	branch = main
+	update = rebase
