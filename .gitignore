@@ -20,3 +20,4 @@ build/
 obj/
 
 *.a
+__pycache__/
