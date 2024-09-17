@@ -52,7 +52,6 @@ message(STATUS "Installing aCorrs-OTF")
 set(DIR ${PROJECT_SOURCE_DIR}/obj/) 
 set(INSTALL_DIR ${PROJECT_SOURCE_DIR}) 
 install(TARGETS ${LIB_NAME}_py DESTINATION ${INSTALL_DIR})
-#install(DIRECTORY ${DIR} DESTINATION ${INSTALL_DIR} FILES_MATCHING PATTERN "*.pyd" PATTERN "*.so")
 configure_file("${CMAKE_CURRENT_SOURCE_DIR}/uninstall.cmake.in" "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake" IMMEDIATE @ONLY)
 add_custom_target(uninstall_${PROJECT_NAME} COMMAND ${CMAKE_COMMAND} -P "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake")
 
