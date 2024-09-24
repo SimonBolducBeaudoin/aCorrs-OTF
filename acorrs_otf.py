@@ -27,7 +27,7 @@ def closest_power_of_two(x):
 
 # Returns the proper class. Fancy name: factory. Ghetto name: wrapper wrapper.
 def ACorrUpTo(k, data, phi=False, fft=None, fftchunk='auto', k_fft=32, k_fft_factor=16):
-    if type(data) is ndarray:
+    if isinstance(data, ndarray):
         dtype = data.dtype.name
     else:
         dtype = data
@@ -57,7 +57,7 @@ def ACorrUpTo(k, data, phi=False, fft=None, fftchunk='auto', k_fft=32, k_fft_fac
     else:
         retClass = getattr(acorrs_wrapper, classname)(k)
     
-    if type(data) is ndarray:
+    if isinstance(data, ndarray):
         retClass(data)
     
     return retClass
