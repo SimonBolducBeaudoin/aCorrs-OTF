@@ -12,7 +12,6 @@
 *.dat
 *.npz
 *.pyd
-*.bak
 
 
 build/
@@ -21,3 +20,4 @@ obj/
 
 *.a
 __pycache__/
+*.bak
