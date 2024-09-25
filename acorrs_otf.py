@@ -1,6 +1,8 @@
 #!/bin/python
 # -*- coding: utf-8 -*-
 
+from __future__ import division
+from past.utils import old_div
 import sys, os, platform, time
 import numpy as np
 import matplotlib.pyplot as plt
@@ -73,7 +75,7 @@ def check_ak(a,k):
     m = a.m
     bk = a.bk[k]
     gk = a.gk[k]
-    return (rk-(m-bk)*(m-gk)/nk)/nk
+    return old_div((rk-old_div((m-bk)*(m-gk),nk)),nk)
 
 # Computes phase-resolved a.res using Decimal accumulators
 # Casting result to double should be exactly a.res[f,k]
@@ -84,7 +86,7 @@ def check_afk_phi(a,f,k):
     mfpk = a.mf[(f+k)%a.l]
     bfk = a.bfk[f,k]
     gfk = a.gfk[f,k]
-    return (rfk-((mf-bfk)*(mfpk-gfk))/nfk)/nfk
+    return old_div((rfk-old_div(((mf-bfk)*(mfpk-gfk)),nfk)),nfk)
 
 # Computes phase-resolved a.res0 using Decimal accumulators
 # Casting result to double should be exactly a.res0[k]
@@ -95,7 +97,7 @@ def check_ak_phi(a,k):
     mfpk = a.mf.sum()
     bfk = a.bfk.sum(axis=0)[k]
     gfk = a.gfk.sum(axis=0)[k]
-    return (rfk-((mf-bfk)*(mfpk-gfk))/nfk)/nfk
+    return old_div((rfk-old_div(((mf-bfk)*(mfpk-gfk)),nfk)),nfk)
 
 # Converts an ACorrUpTo object to a dict with the same information
 def a_to_dict_phi(a):
