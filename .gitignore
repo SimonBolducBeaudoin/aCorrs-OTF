@@ -21,3 +21,4 @@ obj/
 *.a
 __pycache__/
 *.bak
+.clang-format
