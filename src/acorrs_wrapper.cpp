@@ -232,18 +232,11 @@ template <typename T> void declare_phiclass(py::module &m, std::string typestr) 
         .def("compute_aCorrs", &Class::compute_aCorrs)
         .def("get_aCorrs",
              [](Class &self) {
-                 auto res = py::array_t<double>(
-                     {
-                         self.lambda * self.k,
-                     }, // shape
-                     {
-                         sizeof(double),
-                     },           // C-style contiguous strides for double
+                 return py::array_t<double>(
+                     {self.lambda,self.k,}, // shape
+                     {sizeof(double)*self.k,sizeof(double)},// C-style contiguous strides for double
                      self.aCorrs, // the data pointer
-                     py::capsule(self.aCorrs,
-                                 [](void *f) { ; })); // numpy array references this parent
-                 res.resize({self.lambda, self.k});
-                 return res;
+                     py::capsule(self.aCorrs,[](void *f) { ; })); // numpy array references this parent;
              })
         .def("__call__",
              [](Class &self, py::array_t<T, py::array::c_style> &array) {
@@ -263,15 +256,10 @@ template <typename T> void declare_phiclass(py::module &m, std::string typestr) 
                     tmp = self.aCorrs;
                 }
                 auto res = py::array_t<double>(
-                    {
-                        self.lambda * self.k,
-                    }, // shape
-                    {
-                        sizeof(double),
-                    },                                    // C-style contiguous strides for double
+                    {self.lambda,self.k,}, // shape
+                    {sizeof(double)*self.k,sizeof(double)},// C-style contiguous strides for double
                     tmp,                                  // the data pointer
                     py::capsule(tmp, [](void *f) { ; })); // numpy array references this parent
-                res.resize({self.lambda, self.k});
                 return res;
             })
         .def_property_readonly(
